@@ -31,6 +31,7 @@ public class ClientGUI extends javax.swing.JFrame {
         
          try{
             initComponents();
+            this.setTitle(userName);
             this.socket = socket;
             this.userName = userName;
             this.Reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -153,6 +154,17 @@ public class ClientGUI extends javax.swing.JFrame {
             
             Socket socket = new Socket("localhost",2020);
             String name = JOptionPane.showInputDialog(null, "Enter Your UserName");
+            if(name.equals("")){
+                    /**
+                        Checking if name is valid 
+                        * Trimming the name in order to prevent white spaces by the user
+                     */
+                    while( name.trim().length() == 0 || name.equals("") ){
+                        JOptionPane.showMessageDialog(null,"Please Enter Valid Name" );
+                        name = JOptionPane.showInputDialog(null, "Enter Your UserName");
+                    }
+                  
+            }
             ClientGUI main = new ClientGUI(socket,name);
             sendMessage(name);
             main.setVisible(true);
@@ -167,21 +179,6 @@ public class ClientGUI extends javax.swing.JFrame {
 
     }
 
-    
-// public static String createAccount(){
-//     String userName;
-//     userName = 
-//       try {
-//                   
-//                    Writer.write(userName);
-//                    Writer.newLine();
-//                    Writer.flush();
-//                    System.out.println("USERNAME SEND");
-//             } catch (Exception e) {
-//                 System.out.println("Error");
-//             }
-//       return userName;
-// }
     
  public static void sendMessage(String username){
      

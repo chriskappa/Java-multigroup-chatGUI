@@ -5,6 +5,7 @@ import java.net.Socket;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
+import javax.swing.JOptionPane;
 
 public class ClientHandler implements Runnable {
 
@@ -53,20 +54,49 @@ public class ClientHandler implements Runnable {
     @Override
     public void run(){
         String msgFromClient;
-        Date time = java.util.Calendar.getInstance().getTime();
+    
         while(socket.isConnected()){
             try{
 
                 msgFromClient = Reader.readLine();
+                userCommands(msgFromClient);
+  
+                
+   
+                
+               
                
 
-                sendMessage(clientUsername+" : "+ msgFromClient+"at ("+time+")");
             }
             catch(IOException e){
                 closeStreams(socket,Reader,Writer);
                 break;
             }
         }
+    }
+    
+    public void userCommands(String msgFromClient){
+            Date time = java.util.Calendar.getInstance().getTime();
+            String [] toUser = msgFromClient.split(" ");
+                if(msgFromClient.contains("!online")) {
+                printOnlineUsers();
+                    
+                
+                } 
+                else if(msgFromClient.contains("!private")){
+                    try {
+                         privateMessage(msgFromClient, toUser[1].toString());
+                    } catch (Exception e) {
+                        System.out.println("Error User Not send");
+                    }
+                   
+                }
+                 else{
+                   sendMessage(clientUsername+" : "+ msgFromClient+"at ("+time+")");
+
+                }
+               
+    
     }
 
     private void printOnlineUsers() {
@@ -122,6 +152,24 @@ public class ClientHandler implements Runnable {
 
     }
 
+    
+    public boolean isOnline(String user){
+    for(ClientHandler client:users){
+            try{
+                    if(client.clientUsername == user){
+                        return true;
+                    }
+
+
+
+            }catch(Exception e){
+                closeStreams(socket,Reader,Writer);
+            }
+
+
+        }
+    return false;
+    }
     public void sendMessage(String msg,boolean all ){
 
         /**
@@ -145,6 +193,35 @@ public class ClientHandler implements Runnable {
 
 
         }
+
+    }
+    
+    public void privateMessage(String msg,String user ){
+
+        /**
+         * Sending Messages to clients except the Client who sends this message
+         * And then we flush the buffer
+         * because the buffer sends data only when its full so we do it manualy in case its not full
+         * After users Message*/
+        for(ClientHandler client:users){
+            try{
+                    if(client.clientUsername.equals(user) ){
+                        client.Writer.write(msg);
+                        client.Writer.newLine();
+                        client.Writer.flush();
+                    }
+                   
+
+                    
+
+            }catch(IOException e){
+                closeStreams(socket,Reader,Writer);
+            }
+
+                              
+
+        }
+
 
     }
 
