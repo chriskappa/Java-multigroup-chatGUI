@@ -60,7 +60,7 @@ public class ClientHandler implements Runnable {
                 msgFromClient = Reader.readLine();
                
 
-                sendMessage(msgFromClient);
+                sendMessage(clientUsername+" : "+ msgFromClient+"at ("+time+")");
             }
             catch(IOException e){
                 closeStreams(socket,Reader,Writer);

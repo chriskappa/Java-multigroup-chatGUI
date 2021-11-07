@@ -1,4 +1,5 @@
 
+import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -63,6 +64,12 @@ public class ClientGUI extends javax.swing.JFrame {
             }
         });
 
+        txt_field.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_fieldKeyPressed(evt);
+            }
+        });
+
         text_area.setColumns(20);
         text_area.setRows(5);
         jScrollPane1.setViewportView(text_area);
@@ -98,7 +105,16 @@ public class ClientGUI extends javax.swing.JFrame {
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
         
-         new Thread(new Runnable() {
+        sendMsg();
+    
+    }//GEN-LAST:event_jButton1MouseClicked
+
+    
+    /**
+     * Functions that broadcast user message to the server
+     */
+    public void sendMsg(){
+        new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -121,8 +137,13 @@ public class ClientGUI extends javax.swing.JFrame {
                 
             }
         }).start();
-    
-    }//GEN-LAST:event_jButton1MouseClicked
+    }
+    private void txt_fieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_fieldKeyPressed
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            sendMsg();
+            
+        }
+    }//GEN-LAST:event_txt_fieldKeyPressed
 
     /**
      * @param args the command line arguments
@@ -132,8 +153,8 @@ public class ClientGUI extends javax.swing.JFrame {
             
             Socket socket = new Socket("localhost",2020);
             String name = JOptionPane.showInputDialog(null, "Enter Your UserName");
-            sendMessage(name);
             ClientGUI main = new ClientGUI(socket,name);
+            sendMessage(name);
             main.setVisible(true);
             main.listenForMessages();
 

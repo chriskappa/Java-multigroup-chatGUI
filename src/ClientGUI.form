@@ -62,6 +62,9 @@
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="txt_field">
+      <Events>
+        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txt_fieldKeyPressed"/>
+      </Events>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
       <AuxValues>
