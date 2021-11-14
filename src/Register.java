@@ -103,6 +103,20 @@ public class Register extends javax.swing.JFrame {
         String password = userPassword.getText();
         String passwordverify = userPasswordVerify.getText();
         String email = userEmail.getText();
+        if(inputValidation()){
+            database.registerUser(uname, password, email);
+        }
+       
+    }//GEN-LAST:event_jButton1MouseClicked
+
+    /* Input Validation method returns True if the user inputs are correct
+       And False if they are not 
+    */
+    public boolean inputValidation(){
+        String uname = userName.getText();
+        String password = userPassword.getText();
+        String passwordverify = userPasswordVerify.getText();
+        String email = userEmail.getText();
         boolean error = false;
         ArrayList<String> errorMSG = new ArrayList<String>();
         errorMSG.clear();
@@ -122,13 +136,14 @@ public class Register extends javax.swing.JFrame {
         }
     
         if(errorMSG.size() == 0){
-            database.registerUser(uname, password, email);
+//            database.registerUser(uname, password, email);
+            System.out.println("REGISTER");
+            return true;
         }else{
                 errorPrint.setText(errorMSG.get(0));
         }
-       
-    }//GEN-LAST:event_jButton1MouseClicked
-
+        return false;
+    }
     /**
      * @param args the command line arguments
      */
