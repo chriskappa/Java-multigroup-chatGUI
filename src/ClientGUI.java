@@ -41,6 +41,9 @@ public class ClientGUI extends javax.swing.JFrame {
            System.out.println("ERROR");
        }
     }
+    
+    public ClientGUI(){
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -150,7 +153,37 @@ public class ClientGUI extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-         try{
+//         try{
+//            
+//            Socket socket = new Socket("localhost",2020);
+//            String name = JOptionPane.showInputDialog(null, "Enter Your UserName");
+//            if(name.equals("")){
+//                    /**
+//                        Checking if name is valid 
+//                        * Trimming the name in order to prevent white spaces by the user
+//                     */
+//                    while( name.trim().length() == 0 || name.equals("") ){
+//                        JOptionPane.showMessageDialog(null,"Please Enter Valid Name" );
+//                        name = JOptionPane.showInputDialog(null, "Enter Your UserName");
+//                    }
+//                  
+//            }
+//            ClientGUI main = new ClientGUI(socket,name);
+//            sendMessage(name);
+//            main.setVisible(true);
+//            main.listenForMessages();
+//
+//        }
+//        catch(IOException e){
+//            e.toString();
+//        }
+//        
+         
+
+    }
+
+    public void startClient(){
+    try{
             
             Socket socket = new Socket("localhost",2020);
             String name = JOptionPane.showInputDialog(null, "Enter Your UserName");
@@ -173,12 +206,7 @@ public class ClientGUI extends javax.swing.JFrame {
         }
         catch(IOException e){
             e.toString();
-        }
-        
-         
-
-    }
-
+        }}
     
  public static void sendMessage(String username){
      
