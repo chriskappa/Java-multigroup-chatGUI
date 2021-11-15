@@ -14,6 +14,7 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 /**
  *
  * @author Xristakos
@@ -28,7 +29,7 @@ public class db {
       try {
           return  DriverManager.getConnection("jdbc:mysql://root@localhost/chatdb");
       } catch (SQLException e) {
-          System.out.println("Couldnt Connect to DB");
+        JOptionPane.showMessageDialog(null, "Couldnt Connect To Database,Please Make Sure To Open MYSQL Database First");
       }
     return null;
   }
