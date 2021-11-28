@@ -110,10 +110,14 @@ public class ClientGUI extends javax.swing.JFrame {
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
         
         sendMsg();
-    
+        
     }//GEN-LAST:event_jButton1MouseClicked
 
     
+    
+   public void clearInputs(){
+    txt_field.setText("");
+   }
     /**
      * Functions that broadcast user message to the server
      */
@@ -129,7 +133,7 @@ public class ClientGUI extends javax.swing.JFrame {
                           Writer.write(msg);
                           Writer.newLine();
                           Writer.flush();
-                     
+                          clearInputs();
                       }
                       
                  
@@ -145,6 +149,7 @@ public class ClientGUI extends javax.swing.JFrame {
     private void txt_fieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_fieldKeyPressed
         if(evt.getKeyCode() == KeyEvent.VK_ENTER){
             sendMsg();
+            
             
         }
     }//GEN-LAST:event_txt_fieldKeyPressed
