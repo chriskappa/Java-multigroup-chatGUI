@@ -292,7 +292,7 @@ public class ClientHandler implements Runnable {
     }
     
     
-     /** This Function is converting String of Array To Single Word **/
+     /** This Method Returns If User Participate In Specific Group Chat**/
     public boolean isPartOfTheGroup(String user,String groupName){
         boolean isRegistered = false;
         switch(groupName){
