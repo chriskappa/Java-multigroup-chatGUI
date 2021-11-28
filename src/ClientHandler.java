@@ -11,7 +11,12 @@ public class ClientHandler implements Runnable {
 
 
     public static ArrayList<ClientHandler> users = new ArrayList<ClientHandler>();
-    public static ArrayList<ClientHandler> publicGroup = new ArrayList<ClientHandler>();
+    
+    public static ArrayList<ClientHandler> LondonMet = new ArrayList<ClientHandler>();
+    public static ArrayList<ClientHandler> PublicGroup = new ArrayList<ClientHandler>();
+    public static ArrayList<ClientHandler> News = new ArrayList<ClientHandler>();
+    
+    
     /**
      Creating Socket reference we are storing
      clients socket and can use its socket
@@ -40,8 +45,7 @@ public class ClientHandler implements Runnable {
             
             /** This line of code is blocking line
              * and waits until the users sends
-             * the input at this case the username*/
-//            this.clientUsername = "test";
+             * the input, at this case the username*/
             this.clientUsername = Reader.readLine();
             users.add(this); //Adding "this" object which is the current Client to the array
             sendMessage("SERVER: Client "+clientUsername+" welcome to the chat!");
@@ -77,39 +81,39 @@ public class ClientHandler implements Runnable {
     }
     
     
+    /** This Method Is Converting String Array To Single Word **/
     public String convertStringArrayToString(String msg){
         String[] arrayString = msg.split(" ");
         String word="";
        for(int i=2;i<arrayString.length; i++){
            
            word+=arrayString[i]+" ";
-//           System.out.println(arrayString[i]);
         }
         return word;
         
     }
     
+    
+     /** This Method Is Responsible To Accept User Commands
+      * Available Commands
+      * !online ,  !join groupName (Entering Group Chat), !group groupName Message (Sending Message to Group Chat)
+      **/
     public void userCommands(String msgFromClient){
             Date time = java.util.Calendar.getInstance().getTime();
             String [] toUser = msgFromClient.split(" ");
                 if(msgFromClient.contains("!online")) {
-                printOnlineUsers();
-                    
-                
+                    printOnlineUsers();
                 } 
                 else if(msgFromClient.contains("!private")){
                     try {
-                         privateMessage(this.clientUsername+":"+convertStringArrayToString(msgFromClient)+" at ("+time+")", toUser[1].toString());
+                         privateMessage("PRIVATE MESSAGE BY "+this.clientUsername+":"+convertStringArrayToString(msgFromClient)+" at ("+time+")", toUser[1].toString());
                     } catch (Exception e) {
                         System.out.println("Error User Not send");
                     }
                    
                 }
-                else if(msgFromClient.contains("!join")){
-                    if(toUser[1].equals("publicGroup")){
-                        joinGroup(toUser[1]);
-                    }
-                   
+                else if(msgFromClient.contains("!join")){      
+                    joinGroup(toUser[1]);
                 }
                 else if(msgFromClient.contains("!group")){
                     
@@ -123,6 +127,8 @@ public class ClientHandler implements Runnable {
     
     }
 
+    
+     /** This Function Is Printing All Online Users Of The Chat**/
     private void printOnlineUsers() {
         sendMessage("_______ONLINE USERS_______",true);
         for(ClientHandler user : users){
@@ -139,16 +145,39 @@ public class ClientHandler implements Runnable {
     }
 
     
+    
+     /** JoinGroup Method Is Registering Users To Group Chat 
+      Available Group Chats:
+      LondonMet,PublicGroup,News (!join LondonMet , !join PublicGroup , !join News)
+      **/
     public void joinGroup(String groupName){
-   
+        
         try {
-           publicGroup.add(this);
-            System.out.println("User"+this.clientUsername+" added to the group");
-            
+            switch(groupName){
+                case "LondonMet": {
+                    System.out.println("Adding To LondonMet");
+                    LondonMet.add(this);
+                    break;
+                }
+                case "PublicGroup": {
+                    System.out.println("Adding To PublicGroup");
+                    PublicGroup.add(this);
+                    break;
+                    }
+                case "News":{
+                    System.out.println("Adding To News");
+                    News.add(this);
+                    break;
+                }
+              
+            }
+               
         } catch (Exception e) {
             System.out.println("Couldnt Add client to Group");
         }
     }
+    
+     /** closeStreams Method Is Responsible To Close All Open Channels (socket,reader,writer) **/
     public void closeStreams(Socket socket , BufferedReader reader , BufferedWriter writer){
         removeUser();
         try{
@@ -168,7 +197,7 @@ public class ClientHandler implements Runnable {
             /**
              * Sending Messages to clients except the Client who sends this message
              * And then we flush the buffer
-             * because the buffer sends data only when its full so we do it manualy in case its not full
+             * because the buffer sends data only when its full so I do it manually in case its not full
              * After users Message*/
             for(ClientHandler client:users){
                 try{
@@ -188,6 +217,8 @@ public class ClientHandler implements Runnable {
     }
 
     
+    
+     /** isOnline Method Returns If Specific User Is Online! **/
     public boolean isOnline(String user){
     for(ClientHandler client:users){
             try{
@@ -205,13 +236,13 @@ public class ClientHandler implements Runnable {
         }
     return false;
     }
-    public void sendMessage(String msg,boolean all ){
-
-        /**
+    
+     /**
          * Sending Messages to clients except the Client who sends this message
          * And then we flush the buffer
          * because the buffer sends data only when its full so we do it manualy in case its not full
          * After users Message*/
+    public void sendMessage(String msg,boolean all ){
         for(ClientHandler client:users){
             try{
                     if(client.clientUsername == clientUsername){
@@ -231,13 +262,13 @@ public class ClientHandler implements Runnable {
 
     }
     
-    public void privateMessage(String msg,String user ){
-
-        /**
+    
+     /**
          * Sending Messages to clients except the Client who sends this message
          * And then we flush the buffer
          * because the buffer sends data only when its full so we do it manualy in case its not full
          * After users Message*/
+    public void privateMessage(String msg,String user ){
         for(ClientHandler client:users){
             try{
                     if(client.clientUsername.equals(user) ){
@@ -261,49 +292,123 @@ public class ClientHandler implements Runnable {
     }
     
     
-    public boolean isPartOfTheGroup(String user){
+     /** This Function is converting String of Array To Single Word **/
+    public boolean isPartOfTheGroup(String user,String groupName){
         boolean isRegistered = false;
-       for(ClientHandler currentUser : publicGroup){
-            try{
-//                System.out.println("Current User:"+currentUser+"="+this.clientUsername);
-                if(currentUser.clientUsername == this.clientUsername ){
-                    return true;
+        switch(groupName){
+            case "LondonMet":{
+                for(ClientHandler currentUser : LondonMet){
+                    try{
+                        if(currentUser.clientUsername == this.clientUsername ){
+                            isRegistered = true;
+                            break;
+                        }
+                    }
+                    catch(Exception e){
+                        e.printStackTrace();
+                    }
+                 }
+                break;
+            }
+              case "PublicGroup":{
+                for(ClientHandler currentUser : PublicGroup){
+                    try{
+                        if(currentUser.clientUsername == this.clientUsername ){
+                            isRegistered = true;
+                            break;
+                        }
+                    }
+                    catch(Exception e){
+                        e.printStackTrace();
+                    }
                 }
+                break;
             }
-            catch(Exception e){
-                e.printStackTrace();
+                case "News":{
+                for(ClientHandler currentUser : News){
+                    try{
+                        if(currentUser.clientUsername == this.clientUsername ){
+                            isRegistered = true;
+                            break;
+                        }
+                    }
+                    catch(Exception e){
+                        e.printStackTrace();
+                    }
+                }
+                break;
             }
-
-         
         }
-        return false;
+        return isRegistered;
     }
-    public void sendGroupMessage(String msg,String group ){
-
-        /**
+    
+     /**
          * Sending Messages to clients except the Client who sends this message
          * And then we flush the buffer
          * because the buffer sends data only when its full so we do it manualy in case its not full
          * After users Message*/
-       
+    public void sendGroupMessage(String msg,String group ){       
         try {
              
-           boolean isRegistered = isPartOfTheGroup(this.clientUsername);
+           boolean isRegistered = isPartOfTheGroup(this.clientUsername,group);
            if(isRegistered){
-                for(ClientHandler client:publicGroup){
-                try{
+               
+               switch(group){
+                   case "LondonMet":{
+                       
+                     for(ClientHandler client:LondonMet){
+                        try{
                    
-                        client.Writer.write(msg);
+                        client.Writer.write("GROUP MESSAGE(LondonMet)"+msg);
                         client.Writer.newLine();
                         client.Writer.flush();
-                    
+                       
 
-                }catch(IOException e){
+                    }catch(IOException e){
                     closeStreams(socket,Reader,Writer);
-                }
+                    }
 
 
-            }
+               }
+                     break;
+                   }
+                    case "PublicGroup":{
+                       
+                     for(ClientHandler client:PublicGroup){
+                        try{
+                   
+                        client.Writer.write("GROUP MESSAGE(PublicGroup)"+msg);
+                        client.Writer.newLine();
+                        client.Writer.flush();
+                       
+
+                    }catch(IOException e){
+                    closeStreams(socket,Reader,Writer);
+                    }
+
+
+               }
+                     break;
+                   }
+                     case "News":{
+                       
+                     for(ClientHandler client:News){
+                        try{
+                   
+                        client.Writer.write("GROUP MESSAGE(News)"+msg);
+                        client.Writer.newLine();
+                        client.Writer.flush();
+                       
+
+                    }catch(IOException e){
+                    closeStreams(socket,Reader,Writer);
+                    }
+
+
+               }
+                     break;
+                   }
+               }
 
                
            }
