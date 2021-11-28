@@ -205,8 +205,10 @@ public class ClientGUI extends javax.swing.JFrame {
 
         }
         catch(IOException e){
-            e.toString();
+            JOptionPane.showMessageDialog(null,"The Server is Offline, or MYSQL, Please Run The Server First!" );
+            System.out.println(e);
         }}
+     
     
  public static void sendMessage(String username){
      

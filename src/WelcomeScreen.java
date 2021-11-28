@@ -15,6 +15,8 @@ public class WelcomeScreen extends javax.swing.JFrame {
      */
     public WelcomeScreen() {
         initComponents();
+        setResizable(false);
+        this.setLocationRelativeTo(null);
     }
 
     /**

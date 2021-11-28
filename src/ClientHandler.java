@@ -11,6 +11,7 @@ public class ClientHandler implements Runnable {
 
 
     public static ArrayList<ClientHandler> users = new ArrayList<ClientHandler>();
+    public static ArrayList<ClientHandler> publicGroup = new ArrayList<ClientHandler>();
     /**
      Creating Socket reference we are storing
      clients socket and can use its socket
@@ -36,7 +37,7 @@ public class ClientHandler implements Runnable {
             this.socket = socket;
             this.Reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.Writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-
+            
             /** This line of code is blocking line
              * and waits until the users sends
              * the input at this case the username*/
@@ -75,6 +76,19 @@ public class ClientHandler implements Runnable {
         }
     }
     
+    
+    public String convertStringArrayToString(String msg){
+        String[] arrayString = msg.split(" ");
+        String word="";
+       for(int i=2;i<arrayString.length; i++){
+           
+           word+=arrayString[i]+" ";
+//           System.out.println(arrayString[i]);
+        }
+        return word;
+        
+    }
+    
     public void userCommands(String msgFromClient){
             Date time = java.util.Calendar.getInstance().getTime();
             String [] toUser = msgFromClient.split(" ");
@@ -85,11 +99,21 @@ public class ClientHandler implements Runnable {
                 } 
                 else if(msgFromClient.contains("!private")){
                     try {
-                         privateMessage(msgFromClient, toUser[1].toString());
+                         privateMessage(this.clientUsername+":"+convertStringArrayToString(msgFromClient)+" at ("+time+")", toUser[1].toString());
                     } catch (Exception e) {
                         System.out.println("Error User Not send");
                     }
                    
+                }
+                else if(msgFromClient.contains("!join")){
+                    if(toUser[1].equals("publicGroup")){
+                        joinGroup(toUser[1]);
+                    }
+                   
+                }
+                else if(msgFromClient.contains("!group")){
+                    
+                   sendGroupMessage(this.clientUsername+":"+convertStringArrayToString(msgFromClient)+" at ("+time+")",toUser[1]);
                 }
                  else{
                    sendMessage(clientUsername+" : "+ msgFromClient+"at ("+time+")");
@@ -114,6 +138,17 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    
+    public void joinGroup(String groupName){
+   
+        try {
+           publicGroup.add(this);
+            System.out.println("User"+this.clientUsername+" added to the group");
+            
+        } catch (Exception e) {
+            System.out.println("Couldnt Add client to Group");
+        }
+    }
     public void closeStreams(Socket socket , BufferedReader reader , BufferedWriter writer){
         removeUser();
         try{
@@ -224,6 +259,62 @@ public class ClientHandler implements Runnable {
 
 
     }
+    
+    
+    public boolean isPartOfTheGroup(String user){
+        boolean isRegistered = false;
+       for(ClientHandler currentUser : publicGroup){
+            try{
+//                System.out.println("Current User:"+currentUser+"="+this.clientUsername);
+                if(currentUser.clientUsername == this.clientUsername ){
+                    return true;
+                }
+            }
+            catch(Exception e){
+                e.printStackTrace();
+            }
+
+         
+        }
+        return false;
+    }
+    public void sendGroupMessage(String msg,String group ){
+
+        /**
+         * Sending Messages to clients except the Client who sends this message
+         * And then we flush the buffer
+         * because the buffer sends data only when its full so we do it manualy in case its not full
+         * After users Message*/
+       
+        try {
+             
+           boolean isRegistered = isPartOfTheGroup(this.clientUsername);
+           if(isRegistered){
+                for(ClientHandler client:publicGroup){
+                try{
+                   
+                        client.Writer.write(msg);
+                        client.Writer.newLine();
+                        client.Writer.flush();
+                    
+
+                }catch(IOException e){
+                    closeStreams(socket,Reader,Writer);
+                }
+
+
+            }
+
+               
+           }
+           else{
+               System.out.println("Please Registerd to the group!");
+           }
+        } catch (Exception e) {
+        }
+
+    }
+
 
 
     /**
