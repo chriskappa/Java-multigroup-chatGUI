@@ -2,6 +2,14 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/D:/Project8.02/MultiChat/src/Client.java</file>
+            <file>file:/D:/Project8.02/MultiChat/src/ClientHandler.java</file>
+            <file>file:/D:/Project8.02/MultiChat/src/ConnectionString.java</file>
+            <file>file:/D:/Project8.02/MultiChat/src/Server.java</file>
+            <file>file:/D:/Project8.02/MultiChat/src/ClientGUI.java</file>
+            <file>file:/D:/Project8.02/MultiChat/src/Login.java</file>
+            <file>file:/D:/Project8.02/MultiChat/src/ServerGUI.java</file>
+        </group>
     </open-files>
 </project-private>

@@ -15,7 +15,7 @@ public class ClientHandler implements Runnable {
     public static ArrayList<ClientHandler> LondonMet = new ArrayList<ClientHandler>();
     public static ArrayList<ClientHandler> PublicGroup = new ArrayList<ClientHandler>();
     public static ArrayList<ClientHandler> News = new ArrayList<ClientHandler>();
-    
+    Date time = java.util.Calendar.getInstance().getTime();
     
     /**
      Creating Socket reference we are storing
@@ -65,7 +65,7 @@ public class ClientHandler implements Runnable {
 
                 msgFromClient = Reader.readLine();
                 userCommands(msgFromClient);
-  
+                writeToFile("(MESSAGE SENT BY)"+this.clientUsername+":"+msgFromClient+" at "+time+" \n");
                 
    
                 
@@ -93,13 +93,25 @@ public class ClientHandler implements Runnable {
         
     }
     
+     public void writeToFile(String message){
+        try {
+           FileWriter myWriter = new FileWriter("ChatEventLogger.txt",true);
+           myWriter.write(message);
+           myWriter.close();
+           System.out.println("Successfully wrote to the file.");
+         } catch (IOException e) {
+           System.out.println("An error occurred.");
+           e.printStackTrace();
+         }
+    }
+    
     
      /** This Method Is Responsible To Accept User Commands
       * Available Commands
       * !online ,  !join groupName (Entering Group Chat), !group groupName Message (Sending Message to Group Chat)
       **/
     public void userCommands(String msgFromClient){
-            Date time = java.util.Calendar.getInstance().getTime();
+          
             String [] toUser = msgFromClient.split(" ");
                 if(msgFromClient.contains("!online")) {
                     printOnlineUsers();
