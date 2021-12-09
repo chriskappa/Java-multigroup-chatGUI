@@ -5,3 +5,17 @@
 (MESSAGE SENT BY)Christos:!private test2 hello at Mon Nov 29 22:42:37 GMT 2021 
 (MESSAGE SENT BY)test2:tseting at Mon Nov 29 22:43:29 GMT 2021 
 (MESSAGE SENT BY)test2:testing at Mon Nov 29 22:43:29 GMT 2021 
+(MESSAGE SENT BY)Christos:Hello Guys Checking If The Chat Is Working Properly at Thu Dec 02 20:14:31 GMT 2021 
+(MESSAGE SENT BY)Christos:!private TestUser2 Hello Test User 2 I Am Sending You Private Message at Thu Dec 02 20:14:31 GMT 2021 
+(MESSAGE SENT BY)Christos:!online at Thu Dec 02 20:14:31 GMT 2021 
+SERVER: Client test welcome to the chat!Sun Dec 05 21:31:47 GMT 2021(MESSAGE SENT BY)test:Hello guys at Sun Dec 05 21:31:47 GMT 2021 
+SERVER: Client test welcome to the chat!Sun Dec 05 21:32:53 GMT 2021
+(MESSAGE SENT BY)test:how you doihng at Sun Dec 05 21:32:53 GMT 2021 
+SERVER: Client christos welcome to the chat!Sun Dec 05 21:33:33 GMT 2021
+(MESSAGE SENT BY)christos:!online  at Sun Dec 05 21:33:33 GMT 2021 
+(MESSAGE SENT BY)christos:how are you guys? at Sun Dec 05 21:33:33 GMT 2021 
+SERVER: Client gfdgd welcome to the chat!Sun Dec 05 21:34:57 GMT 2021
+(MESSAGE SENT BY)gfdgd:fdsfs at Sun Dec 05 21:34:57 GMT 2021 
+(MESSAGE SENT BY)gfdgd:vdgfd at Sun Dec 05 21:34:57 GMT 2021 
+(MESSAGE SENT BY)gfdgd:gdfgd at Sun Dec 05 21:34:57 GMT 2021 
+(MESSAGE SENT BY)gfdgd:gdfg at Sun Dec 05 21:34:57 GMT 2021 

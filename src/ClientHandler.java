@@ -49,6 +49,7 @@ public class ClientHandler implements Runnable {
             this.clientUsername = Reader.readLine();
             users.add(this); //Adding "this" object which is the current Client to the array
             sendMessage("SERVER: Client "+clientUsername+" welcome to the chat!");
+            writeToFile("SERVER: Client "+clientUsername+" welcome to the chat!"+time+"\n");
 
         }
         catch(IOException e){
